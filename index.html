@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+  <link rel="stylesheet" href="css/patient-information.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery.mobile-1.4.0.min.js"></script>
+  <script src="js/jquery-picture-min.js"></script>
+  <script src="js/myJS.js" type="text/javascript"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <script>
+	$(function(){
+    $('figure.responsive').picture();
+	});
+	
+	var map;
+
+function initialize() {
+  var mapOptions = {
+    zoom: 6
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  // Try HTML5 geolocation
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = new google.maps.LatLng(position.coords.latitude,
+                                       position.coords.longitude);
+
+      var infowindow = new google.maps.InfoWindow({
+        map: map,
+        position: pos,
+        content: 'Ambulance Current Location.'
+      });
+
+      map.setCenter(pos);
+    }, function() {
+      handleNoGeolocation(true);
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleNoGeolocation(false);
+  }
+}
+
+function handleNoGeolocation(errorFlag) {
+  if (errorFlag) {
+    var content = 'Error: The Geolocation service failed.';
+  } else {
+    var content = 'Error: Your browser doesn\'t support geolocation.';
+  }
+
+  var options = {
+    map: map,
+    position: new google.maps.LatLng(60, 105),
+    content: content
+  };
+
+  var infowindow = new google.maps.InfoWindow(options);
+  map.setCenter(options.position);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+	
+  </script>
+  <style>
+	#map-canvas { width: 50%; height: 50%; padding: 0; }
+  </style>
+</head>
+<body onload="InitThis();">
+  <div data-role="page" data-theme="a" id="main-page" class="my-page">
+
+	<div data-role="header" data-theme="a">
+		<h1>Ambulant CARE</h1>
+		
+	</div><!-- /header -->
+	
+	
+	<div data-role="content">
+	
+	<div class="ui-grid-solo">
+		<div class="ui-block-a" style="background-color: red;">
+		<img src="images/header.png" style="display: block; margin-left: auto; margin-right: auto;">
+		</div>
+	</div>
+				<div class="ui-grid-a">
+						<div class="ui-block-a">
+							  <ul data-role="listview" data-inset="true" >
+									<li data-theme="d">
+									<a href="#map-page">
+										<img src="images/direction.png" />
+									<h2>Directions</h2></a>
+									</li>
+									<li data-theme="b">
+									<a href="#triage-page">
+										<img src="images/triage.png" />
+									<h2>Triage</h2></a>
+									</li>
+									<li data-theme="g">
+									<a href="#nature-page">
+										<img src="images/ecreport.png" />
+									<h2>EC Report</h2></a>
+									</li>
+							</ul>
+						</div>
+						
+						<div class="ui-block-b">
+							  <ul data-role="listview" data-inset="true" >
+									<li data-theme="f">
+									<a href="#pep-page">
+										<img src="images/pep.png" />
+									<h2>PEP</h2></a>
+									</li>
+									<li  data-theme="a">
+									<a href="#vitalsigns-page">
+										<img src="images/vitalsigns.png" />
+									<h2>Vital Signs</h2></a>
+									</li>
+									<li data-theme="e">
+									<a href="#">
+										<img src="images/pepreport.png" />
+									<h2>PEP Report</h2></a>
+									</li>
+							</ul>
+						</div>
+				</div>		
+				
+		
+                
+    </div><!-- /content -->
+    
+    <div data-role="footer" data-position="fixed">
+		<div data-role="navbar" >
+			<ul>
+				<li><button class="ui-btn ui-icon-check ui-btn-icon-top" id="btnLogin">SUBMIT</button></li>
+			</ul>
+		</div>
+		</div>
+
+</div><!-- /page -->
+
+<!-- ------------PAGE MAP-------------- -->
+    <div data-role="page" id="map-page">
+	<div data-role="header" data-theme="a">
+		<h1>News</h1>
+		<a href="grid-listview.html" data-shadow="false" data-iconshadow="false" data-icon="arrow-l" data-iconpos="notext" data-rel="back" data-ajax="false">Back</a>
+	</div><!-- /header -->
+    <div data-role="main" class="ui-content">
+    	<h1>Select Hospital Destination</h1>
+
+    	<div>Current Location: <p id="currLoc"></p></div>
+		<div id="map-canvas">
+        <!-- map loads here... -->
+		</div>
+		
+		
+		
+		
+		<div class="ui-grid-a">
+						<div class="ui-block-a">
+							  <ul data-role="listview" data-inset="true" >
+									<li data-theme="d">
+									<a href="#pageDirection">
+										<img src="images/hospitals/james1.jpg" />
+									<h2>James L. Gordon Hospital</h2>
+									<p>Asinan, Olongapo</p>
+									</a>
+									</li>
+									<li data-theme="b">
+									<a href="#">
+										<img src="images/hospitals/baypointe.jpg" />
+									<h2>Baypointe Hospital and Medical Center</h2>
+									<p>Block 8 Lot 1A and 1B Dewey Avenue, Subic Bay Freeport Zone</p>
+									</a>
+									</li>
+									<li data-theme="g">
+									<a href="#">
+										<img src="images/hospitals/stjude.jpg" />
+									<h2>St. Jude Family Hospital</h2>
+									<p>Harris Street, Olongapo</p>
+									</a>
+									</li>
+							</ul>
+						</div>
+						
+						<div class="ui-block-b">
+							  <ul data-role="listview" data-inset="true" >
+									<li data-theme="f">
+									<a href="#">
+										<img src="images/hospitals/afable.jpg" />
+									<h2>Afable Medical Center</h2>
+									<p>
+										Afable Street, East Bajac-Bajac, Olongapo City
+									</p>
+									</a>
+									</li>
+									<li  data-theme="a">
+									<a href="#">
+										<img src="images/hospitals/perpetual.jpg" />
+									<h2>Perpetual Help Hospital</h2>
+									<p>#75, 18th Street, EBB, Olongapo</p>
+									</a>
+									</li>
+									<li data-theme="e">
+									<a href="#">
+										<img src="images/hospitals/mother.jpg" />
+									<h2>Mother and Child Family Hospital</h2>
+									<p>Asinan, Olongapo City</p>
+									</a>
+									</li>
+							</ul>
+						</div>
+				</div>
+    	
+    	
+    	<div>Approximate Distance: <p id="approxDist"></p></div>
+		<div>ETA: <p id="eta"></p></div><br /><br />
+		<div style="width:90%; height:90%">Map Here</div>
+
+		
+    </div>
+	
+	    <div data-role="footer" data-position="fixed">
+		<div data-role="navbar" >
+			<ul>
+				<li><a href="#main-page" class="ui-btn ui-icon-home ui-btn-icon-top" id="btnLogin">HOME</a></li>
+				<li><a href="#pep-page" class="ui-btn ui-icon-arrow-r ui-btn-icon-top" id="btnLogin">NEXT</a></li>
+			</ul>
+		</div>
+		</div>
+	
+	</div>
+	
+<!-- ------------PAGE pep-------------- -->
+    <div data-role="page" id="pep-page">
+	
+	<div data-role="header" data-theme="a">
+		<h1>PEP</h1>
+		
+	</div><!-- /header -->
+	
+    <div data-role="main" class="ui-content">
+    	<h1>Patient Information</h1>
+    		<div style="width:30%">
+                <label for="pnum">Patient's Number</label>
+                <input type="text" id="pnum" />
+            </div>
+ 			 <div class="fullname">
+                <label for="fname">Firstname</label>
+                <input type="text" id="fname" />
+            </div>
+            <div class="fullname">
+                <label for=" mname">Middlename</label>
+                <input type="text" id="mname" />
+            </div>
+            <div style="float:left">
+                <label for="lname">Lastname</label>
+                <input type="text" id="lname" />
+            </div> <br /> <br /> <br /> <br />
+            
+            <div class="address">
+                <label for="address"> Address (Street, Baranggay, City/Province, Country, Zip Code)</label>
+                <input type="text" id="address"/>
+            </div>
+
+         	<div style="width:30%">
+         		<label for="gender">Gender</label>
+                <select id="gender" >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select> 
+         	</div>
+
+         	<div style="width:30%">
+                <label for="age">Age</label>
+                <input type="text" id="age" />
+            </div>
+
+             <div style="margin-right:7px; width:30%">
+                <label for="mobilenum">Emergency Contact Number</label>
+                <input type="text" id="mobilenum" />
+            </div>
+    	
+    	
+    </div>
+	
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar" >
+			<ul>
+				<li><a href="#main-page" class="ui-btn ui-icon-home ui-btn-icon-top" id="btnLogin">HOME</a></li>
+				<li><a href="#triage-page" class="ui-btn ui-icon-arrow-r ui-btn-icon-top" id="btnLogin">NEXT</a></li>
+			</ul>
+		</div>
+		</div>
+	</div>	
+
+	<!-- ------------ PAGE THREE -------------- -->
+
+     <div data-role="page" id="triage-page">
+	 
+	 <div data-role="header" data-theme="a">
+		<h1>Triage</h1>
+		
+	</div><!-- /header -->
+	
+    <div data-role="main" class="ui-content">
+    	<h1>Select Medical Triage</h1>
+
+    		<div class="ui-grid-c">
+	<div class="ui-block-a"><a id="btnRed" href="#" class="ui-btn" style="background-color: red;">RED</a></div>
+	<div class="ui-block-b"><a id="btnYellow" href="#" class="ui-btn " style="background-color: yellow;"><span style="color: black;">YELLOW</span></a></div>
+	<div class="ui-block-c"><a id="btnGreen" href="#" class="ui-btn " style="background-color: green;">GREEN</a></div>
+	<div class="ui-block-d"><a id="btnBlack" href="#" class="ui-btn " style="background-color: black;">BLACK</a></div>
+		</div>
+		<script>
+			$(document).ready(function(){
+				$('#btnRed').click(function(){
+					$('#divRed').fadeIn('slow', 'swing');
+					$('#divYellow').hide();
+					$('#divGreen').hide();
+					$('#divBlack').hide();
+				});
+				
+				$('#btnYellow').click(function(){
+					$('#divRed').hide();
+					$('#divYellow').fadeIn('slow', 'swing');
+					$('#divGreen').hide();
+					$('#divBlack').hide();
+				});
+				
+				$('#btnGreen').click(function(){
+					$('#divRed').hide();
+					$('#divYellow').hide();
+					$('#divGreen').fadeIn('slow', 'swing');
+					$('#divBlack').hide();
+				});
+				
+				$('#btnBlack').click(function(){
+					$('#divRed').hide();
+					$('#divYellow').hide();
+					$('#divGreen').hide();
+					$('#divBlack').fadeIn('slow', 'swing');
+				});
+				
+			});
+		</script>
+<hr/><br/>
+<div class="ui-grid-solo">
+		<div class="ui-block-a" style="display: none;" id="divRed" >
+		<img src="images/triage/1.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;">
+		</div>
+		<div class="ui-block-a" style="display: none;" id="divYellow" >
+		<img src="images/triage/2.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;">
+		</div>
+		<div class="ui-block-a" style="display: none;" id="divGreen" >
+		<img src="images/triage/3.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;">
+		</div>
+		<div class="ui-block-a" style="display: none;" id="divBlack" >
+		<img src="images/triage/4.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;">
+		</div>
+	</div>
+    	</div>
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar" >
+			<ul>
+				<li><a href="#main-page" class="ui-btn ui-icon-home ui-btn-icon-top" id="btnLogin">HOME</a></li>
+				<li><a href="#vitalsigns-page" class="ui-btn ui-icon-arrow-r ui-btn-icon-top" id="btnLogin">NEXT</a></li>
+			</ul>
+		</div>
+		</div>
+   	    	
+    </div>
+	
+<!-- ------------ PAGE FOUR -------------- -->
+    <div data-role="page" id="vitalsigns-page">
+	
+	<div data-role="header" data-theme="a">
+		<h1></h1>
+		
+	</div><!-- /header -->
+	
+    <div data-role="main" class="ui-content">
+    	<h1>Vital Signs</h1>
+
+    	
+            <table style="width:90%"><tr>
+                <td style="width:50%; vertical-align : text-top ">
+                    <label for="time">Time</label>
+                    <div id="time"></div>
+
+                    <div>
+                        <label for="pulserate">Pulse Rate and Rhythm</label>
+                        <input type="text" id="pulserate" />
+                    </div>
+                    <div>
+                        <label for="respiratory">Respiratory Rate</label>
+                        <input type="text" id="respiratory" />
+                    </div>
+
+                    <div>
+                        <label for="resquality">Respiratory Quality</label>
+                        <select id="resquality" style="width:70%">
+                            <option value="Normal">Normal</option>
+                            <option value="Labored">Labored</option>
+                            <option value="Shallow">Shallow</option>
+                            <option value="Noisy">Noisy</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="resquality">Respiratory Quality</label>
+                        <select id="resquality" style="width:70%">
+                            <option value="Normal">Normal</option>
+                            <option value="Labored">Labored</option>
+                            <option value="Shallow">Shallow</option>
+                            <option value="Noisy">Noisy</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="saO2">%SaO2</label>
+                        <input type="text" id="sao2" />
+                    </div>
+
+                    <div>
+                        <label for="caprefill">Capillary Refill</label>
+                        <select id="caprefill1" style="width:70%">
+                            <option value="Normal">greater than 2 sec</option>
+                            <option value="Labored">less than 2 sec</option>
+                        </select>
+                    </div>
+   
+                </td>
+                
+                <td style="width:50%; vertical-align : text-top ">
+                    <div>
+                        <label for="bp">Blood Pressure</label>
+                        <input type="text" id="bp" />
+                    </div>
+
+                    <div>
+                        <label for="temp">Temperature</label>
+                        <input type="text" id="temp" />
+                    </div>
+                    
+                    <div>
+                        <label for="leftsize">Left Pupil Size</label>
+                        <select id="leftsize" style="width:70%">
+                            <option value="Normal">Normal</option>
+                            <option value="Equal">Equal</option>
+                            <option value="Unequal">Unequal</option>
+                            <option value="Constricted">Constricted</option>
+                            <option value="Dilated">Dilated</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="rightsize">Right Pupil Size</label>
+                        <select id="rightsize" style="width:70%">
+                            <option value="Normal">Normal</option>
+                            <option value="Equal">Equal</option>
+                            <option value="Unequal">Unequal</option>
+                            <option value="Constricted">Constricted</option>
+                            <option value="Dilated">Dilated</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="leftreact">Left Reaction</label>
+                        <select id="leftreact" style="width:70%">
+                            <option value="React">React</option>
+                            <option value="None">None</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="rightreact">Right Reaction</label>
+                        <select id="rightreact" style="width:70%">
+                            <option value="React">React</option>
+                            <option value="None">None</option>
+                        </select>
+                    </div>
+
+                    <label for="painscore">Pain Score</label>
+                    <select id="painscore" style="width:70%">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </td>
+                
+                </tr></table><br /><br />
+    	
+    	
+    </div>
+	
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar" >
+			<ul>
+				<li><a href="#main-page" class="ui-btn ui-icon-home ui-btn-icon-top" id="btnLogin">HOME</a></li>
+				<li><a href="#vitalsigns-page" class="ui-btn ui-icon-arrow-r ui-btn-icon-top" id="btnLogin">NEXT</a></li>
+			</ul>
+		</div>
+		</div>
+	
+	</div>
+	
+	<!-- ------------ PAGE FIVE -------------- -->
+    <div data-role="page" id="nature-page">
+    <div data-role="main" class="ui-content">
+    	<h1>Nature of Emergency Case</h1>
+    	<select >
+			<option value="">Please Select Nature of Emergency Case</option>
+			<option value="Chest Pain">Chest Pain</option>
+			<option value="Abdominal Pain">Abdominal Pain</option>
+			<option value="Poisoning">Poisoning</option>
+			<option value="Sprain Broken Injury">Sprain/Broken Injury</option>
+			<option value="Giving Birth">Giving Birth</option>
+			<option value="Burn">Burn</option>
+			<option value="Gun Shot">Gun Shot</option>
+			<option value="Others">Others</option>
+		</select>
+
+
+		<div align="center">
+        <canvas id="myCanvas" width="500" height="500" style="border:2px solid black"></canvas>
+        <script>
+		      var canvas = document.getElementById('myCanvas');
+		      var context = canvas.getContext('2d');
+		      var imageObj = new Image();
+
+		      imageObj.onload = function() {
+		        context.drawImage(imageObj, 69, 50);};
+		      imageObj.src = 'images/man.jpg';
+   		 </script>
+
+    	</div>
+
+		<div>
+			<label for="treatment" style="display:inline-block ">Treatment/Intervention Done</label>
+            <textarea id="treatment" rows="4" cols="10"></textarea>
+            
+        </div>
+
+        <div>
+			<label for="otheractions" style="display:inline-block ">Other Actions Done</label>
+            <textarea id="otheractions" rows="4" cols="10"></textarea>
+        </div>
+
+        
+    </div>
+	
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar" >
+			<ul>
+				<li><a href="#main-page" class="ui-btn ui-icon-home ui-btn-icon-top" id="btnLogin">HOME</a></li>
+				<li><a href="#vitalsigns-page" class="ui-btn ui-icon-arrow-r ui-btn-icon-top" id="btnLogin">NEXT</a></li>
+			</ul>
+		</div>
+		</div>
+
+	
+    </div>
+	
+</body>
+</html>

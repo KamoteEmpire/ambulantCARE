@@ -1,0 +1,35 @@
+﻿/* styles */
+input, label {
+    display: block ;
+}
+
+label { 
+    font-size :small ; font-style :italic; 
+}
+
+.fullname{
+    float: left;
+    margin-right:7px;
+}
+
+.addresswidth{
+    float: left;
+    margin-right:10px;
+    width:60%;
+}
+
+h3{
+    font-weight:bold;
+    color: yellow;
+}
+
+td{
+    border : 2px solid lightgray;
+    padding-left  : 10px;
+    padding-right : 10px;
+}
+
+
+
+
+
